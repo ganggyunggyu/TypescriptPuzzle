@@ -42,6 +42,9 @@ const resultFunc = (a :string[]) => {
             if(resultCount == 9){
                 modal?.classList.add('result-ani')
                 mainBtn?.classList.add('close')
+                for(let i=0; i<puzzle.length; i++){
+                    puzzle[i].draggable = false;
+                }
              }
         }
 

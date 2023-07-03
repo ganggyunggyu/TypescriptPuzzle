@@ -6,7 +6,6 @@
 .container{
     display: flex;
     justify-content: center;
-    height: 100vw s;
 }
 .puzzle-box {
     display: flex;
@@ -88,4 +87,24 @@ button{
     align-items: center;
     width: 100%;
     height: 200px;
+}
+
+@media (max-width: 792px){
+    .container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .puzzle-box{
+        flex-direction: row;
+        margin: 50px;
+    }
+    .result-box{
+        grid-template-columns: 30vw 30vw 30vw;
+        grid-template-rows: 30vw 30vw 30vw;
+    }
+    .puzzle-box > .puzzle{
+        width: 18vw;
+        height: 18vw;
+    }
 }
