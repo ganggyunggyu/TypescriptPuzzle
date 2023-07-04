@@ -14,30 +14,16 @@ const resultArr = [
     'http://127.0.0.1:5500/img/deer_7.jpg', 'http://127.0.0.1:5500/img/deer_8.jpg',
     'http://127.0.0.1:5500/img/deer_9.jpg'
 ];
-btn[0].addEventListener('click', () => {
-    window.location.reload();
-});
-btn[1].addEventListener('click', () => {
-    window.location.reload();
-});
 let randomNumArr = [];
 let puzzleIndex = 0;
 let resultIndex = 0;
 let imgBox = '';
-let arr = [];
-let str = '';
-const resultFunc = (a) => {
-    let resultCount = 0;
-    for (let i = 0; i < resultsImg.length; i++) {
-        let resultStr = resultArr[i];
-        let puzzleStr = a[i];
-        if (resultStr == puzzleStr) {
-            resultCount++;
-            if (resultCount == 9) {
-                modal === null || modal === void 0 ? void 0 : modal.classList.add('result-ani');
-                mainBtn === null || mainBtn === void 0 ? void 0 : mainBtn.classList.add('close');
-            }
-        }
+let submitArr = [];
+const clearBtn = (btn) => {
+    if (btn instanceof HTMLButtonElement) {
+        btn.addEventListener('click', () => {
+            window.location.reload();
+        });
     }
 };
 const makeImg = () => {
@@ -58,13 +44,33 @@ const randomNumber = () => {
             i--;
         }
     }
+    makeImg();
 };
+const resultFunc = (arr) => {
+    let resultCount = 0;
+    for (let i = 0; i < resultsImg.length; i++) {
+        let resultStr = resultArr[i];
+        let puzzleStr = arr[i];
+        if (resultStr == puzzleStr) {
+            resultCount++;
+            if (resultCount == 9) {
+                for (let i = 0; i < puzzle.length; i++) {
+                    puzzle[i].draggable = false;
+                }
+                modal === null || modal === void 0 ? void 0 : modal.classList.add('result-ani');
+                mainBtn === null || mainBtn === void 0 ? void 0 : mainBtn.classList.add('close');
+            }
+        }
+    }
+};
+clearBtn(btn[0]);
+clearBtn(btn[1]);
 randomNumber();
-makeImg();
 for (let i = 0; i < resultsImg.length; i++) {
     resultsImg[i].addEventListener('drop', (e) => {
         e.preventDefault();
         resultIndex = i;
+        console.log('resultIndex : ', resultIndex);
     });
 }
 for (let i = 0; i < puzzle.length; i++) {
@@ -74,74 +80,25 @@ for (let i = 0; i < puzzle.length; i++) {
     puzzle[i].addEventListener('dragstart', () => {
         puzzleIndex = i;
         imgBox = puzzle[i].src;
-        console.log(i);
     });
     puzzle[i].addEventListener('drop', (e) => {
         e.preventDefault();
         puzzle[puzzleIndex].src = puzzle[i].src;
         puzzle[i].src = imgBox;
-        arr.splice(resultIndex, 1, resultsImg[resultIndex].src);
+        submitArr.splice(resultIndex, 1, resultsImg[resultIndex].src);
         if (puzzle[i].src == noImg) {
             puzzle[i].draggable = false;
         }
         else {
             puzzle[i].draggable = true;
         }
-        arr = [];
+        submitArr = [];
         for (let i = 0; i < resultsImg.length; i++) {
-            arr.push(resultsImg[i].src);
+            submitArr.push(resultsImg[i].src);
         }
-        resultFunc(arr);
+        resultFunc(submitArr);
+        console.log('puzzleIndex : ', puzzleIndex, ' i : ', i);
+        console.log('imgBox : ', imgBox);
+        console.log('submitArr : ', submitArr);
     });
 }
-// for(let i=0; i<items.length; i++){
-//         itemsImg[i].addEventListener('dragover', (e)=>{
-//             e.preventDefault()
-//         })
-//         itemsImg[i].addEventListener('dragstart', (e)=>{
-//             imgBox = itemsImg[i].src
-//             puzzleIndex = i
-//             console.log('puzzle start ' , puzzleIndex, i)
-//         })
-//         itemsImg[i].addEventListener('drop', (e)=>{
-//             e.preventDefault();
-//             console.log('puzzle drop' )
-//             dropImgBox = imgBox
-//             resultsImg[resultIndex].src = noImg
-//             itemsImg[puzzleIndex].src = itemsImg[i].src
-//             itemsImg[i].src = imgBox
-//             if(itemsImg[i].src == noImg){
-//                 itemsImg[i].draggable = false;
-//             }else{
-//                 itemsImg[i].draggable = true;
-//             }
-//         })
-//     }
-// for(let i=0; i<results.length; i++){
-//         results[i].addEventListener('dragover', (e)=>{
-//             e.preventDefault()
-//         })
-//         results[i].addEventListener('dragstart', ()=>{
-//             imgBox = resultsImg[i].src
-//             resultIndex = i;
-//             console.log('result start , ' + resultIndex)
-//         })
-//         results[i].addEventListener('drop', (e)=>{
-//             console.log(i)
-//             e.preventDefault();
-//             console.log('result drop')
-//             itemsImg[puzzleIndex].src = noImg
-//             resultsImg[resultIndex].src = resultsImg[i].src;
-//             resultsImg[i].src = imgBox
-//             if(resultsImg[i].src == noImg){
-//                 resultsImg[i].draggable = false;
-//             }else{
-//                 resultsImg[i].draggable = true;
-//             }
-//             if(itemsImg[puzzleIndex].src == noImg){
-//                 itemsImg[puzzleIndex].draggable = false;
-//             }else{
-//                 itemsImg[puzzleIndex].draggable = true;
-//             }
-//         })
-//     }
